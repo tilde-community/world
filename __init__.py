@@ -7,12 +7,14 @@ import time
 # The printer function that should be used all through out the game.
 def printer(text):
     for c in text:
+        if c == '\n':
+            raw_input()
         print(c, end='')
         sys.stdout.flush()
         time.sleep(0.02)
-    print
+    raw_input()
 
-printer('Welcome to the World!')
+printer('Welcome to the World!\nGreetings young adventurer!')
 
 
 # a function that is used when entering the world.
