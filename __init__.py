@@ -3,6 +3,8 @@ from __future__ import print_function
 import sys
 import time
 
+import requests
+
 
 # The printer function that should be used all through out the game.
 def printer(text):
@@ -30,3 +32,17 @@ def find_monster():
 # evaluate the answer given the current monster being fought
 def attack(answer):
     pass
+
+
+# register player to server
+def register(player):
+    try:
+        r = requests.post('http://localhost:8888/register/',
+                          data={'username': player.name})
+    except Exception, e:
+        printer(e)
+        printer('Registration failed. Will try again later.')
+        return False
+    if 'username' in r.json() and r.json()['username'] == player.name:
+        player.registered = True
+    return True
