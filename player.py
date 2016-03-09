@@ -5,6 +5,7 @@ class Player(object):
     """The  main player of the RPG world. Monsters should prepare."""
     level = 1
     life = 6
+    registered = False  # flag for player registered to server
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
