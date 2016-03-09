@@ -16,8 +16,6 @@ def printer(text):
         time.sleep(0.02)
     raw_input()
 
-printer('Welcome to the World!\nGreetings young adventurer!')
-
 
 # a function that is used when entering the world.
 def enter(username):
@@ -36,13 +34,32 @@ def attack(answer):
 
 # register player to server
 def register(player):
+    printer('Registering to server...')
     try:
         r = requests.post('http://localhost:8888/register/',
                           data={'username': player.name})
     except Exception, e:
         printer(e)
-        printer('Registration failed. Will try again later.')
+        printer('... failed! :( . Will try again later.')
         return False
+
+    if r.status_code == 403:
+        printer('... failed! with code {} :( .\
+        Username is already taken.'.format(r.status_code))
+        return False
+    elif r.status_code != 200:
+        printer('... failed! with code {} :( .'.format(r.status_code))
+        return False
+
     if 'username' in r.json() and r.json()['username'] == player.name:
         player.registered = True
+        printer('... success for user {} ! :) .'.format(player.name))
     return True
+
+
+# run this function upon import just to keep things tidy
+def main():
+    printer('Welcome to the World!\nGreetings young adventurer!')
+
+
+main()
