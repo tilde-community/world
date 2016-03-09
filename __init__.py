@@ -14,8 +14,6 @@ def printer(text):
         time.sleep(0.02)
     raw_input()
 
-printer('Welcome to the World!\nGreetings young adventurer!')
-
 
 # a function that is used when entering the world.
 def enter(username):
@@ -30,3 +28,11 @@ def find_monster():
 # evaluate the answer given the current monster being fought
 def attack(answer):
     pass
+
+
+# run this function upon import just to keep things tidy
+def main():
+    printer('Welcome to the World!\nGreetings young adventurer!')
+
+
+main()
