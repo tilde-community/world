@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import pickle
+import random
 import sys
 import time
 
@@ -27,6 +28,11 @@ def printer(text):
 
 
 from player import Player
+from monsters import create_the_monsters
+
+
+__monsters = create_the_monsters()
+__current_monster = None
 
 
 # a function that is used when entering the world.
@@ -39,12 +45,41 @@ def enter():
 
 # find a monster to fight with.
 def find_monster():
-    pass
+    i = random.randint(0, len(__monsters)-1)
+    global __current_monster
+    global game_data
+    defeated_monsters = game_data['player'].defeated_monsters
+    monster = __monsters[i]
+    if monster not in defeated_monsters:
+        __current_monster = monster
+        __current_monster.introduction()
+    else:
+        printer('No monster found. Try again.')
 
 
 # evaluate the answer given the current monster being fought
 def attack(answer):
-    pass
+    global __current_monster
+    global game_data
+    if not __current_monster:
+        printer('You are not fighting any monster as of now.')
+        printer('Use world.find_monster() to fight one.')
+        return
+
+    printer('You attacked {0} with your answer.'.format(
+        __current_monster.name))
+
+    result = __current_monster.evaluate(answer)
+    if result:
+        printer('Your answer is correct!')
+        game_data['player'].defeated_monsters.append(__current_monster)
+        game_data['player'].level_up()
+        save_game_data()
+        __current_monster.defeat()
+        __current_monster = None
+    else:
+        printer('Your answer is wrong!')
+        __current_monster.attack()
 
 
 # register player to server
@@ -133,10 +168,10 @@ def save_game_data():
 
 # run this function upon import just to keep things tidy
 def main():
-    printer('Welcome to the World!\nGreetings young adventurer!')
+    printer('Greetings young adventurer!\nWelcome to... The World!')
     player = get_or_create_player()
     if not player.registered:
         register(player)
-    printer('{}! Our chosen one. I am well pleased.'.format(player.name))
+    printer('{}! Our chosen one. We are well pleased.'.format(player.name))
 
 main()
