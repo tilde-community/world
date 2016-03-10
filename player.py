@@ -6,6 +6,7 @@ class Player(object):
     level = 1
     life = 6
     registered = False  # flag for player registered to server
+    defeated_monsters = []
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
@@ -13,7 +14,7 @@ class Player(object):
     def level_up(self, inc=1):
         """Increase level by inc (default is 1). Increase life as well."""
         self.level += inc
-        self.life += inc
+        self.life += self.level + 5
 
     def display_stats(self):
         """Prints player stats (level, life, etc)"""
