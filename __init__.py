@@ -27,6 +27,7 @@ def printer(text):
 
 
 from player import Player
+import settings
 
 
 # a function that is used when entering the world.
@@ -43,8 +44,10 @@ def find_monster():
 
 
 # evaluate the answer given the current monster being fought
-def attack(answer):
-    pass
+def attack(answer, *args, **kwargs):
+    save_game_data()  # pre save game_data
+    # insert implementation here
+    save_game_data()  # post save game_data
 
 
 # register player to server
@@ -54,7 +57,7 @@ def register(player):
     global game_data
     printer('Registering to server...')
     try:
-        r = requests.post('http://localhost:8888/register/',
+        r = requests.post(settings.register_url,
                           data={'username': player.name})
     except Exception, e:
         printer(e)
@@ -79,8 +82,7 @@ def register(player):
 
 # unregister player to server
 def unregister(player):
-    r = requests.post('http://localhost:8888/deactivate/',
-                      data={'username': player.name})
+    r = requests.post(settings.deactivate_url, data={'username': player.name})
     if r.status_code == 200:
         return True
     return False
