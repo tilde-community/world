@@ -36,10 +36,18 @@ def find_monster():
                         game_data['player'].name), kind="monster-defeat")
         return
 
+    # log activity: found monster
+    create_activity(text="{} is searching for monsters ...".format(
+                    game_data['player'].name),
+                    kind="monster-search")
     game_data['player'].life = game_data['player'].level + 5
     i = game_data['player'].level - 1
     monster = __monsters[i]
     __current_monster = monster
+    # log activity: found monster
+    create_activity(text="{} found {}".format(
+                    game_data['player'].name, __current_monster.name),
+                    kind="monster-found")
     __current_monster.introduction()
     game_data['player'].display_stats()
 
