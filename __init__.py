@@ -55,33 +55,46 @@ def attack(answer):
 
     printer('You attacked {0} with your answer.'.format(
         __current_monster.name))
+    player = game_data['player']
+
+    # log activity: attacks monster
+    create_activity(text="{} attacks {}!".format(player.name,
+                                                 __current_monster.name),
+                    kind="monster-attack")
 
     result = __current_monster.evaluate(answer)
-    player = game_data['player']
     if result:
         printer('Your answer is correct!')
-        player.level_up()
-        save_game_data()
-        __current_monster.defeat()
-        __current_monster = None
         # log activity: defeat monster
         create_activity(text="{} defeated {}!".format(player.name,
                                                       __current_monster.name),
                         kind="monster-defeat")
+
+        player.level_up()
+        # log activity: level up
+        create_activity(text="{} leveled up! Now level {}".format(player.name,
+                                                                  player.level),
+                        kind="player-level-up")
+        save_game_data()
+        __current_monster.defeat()
+        __current_monster = None
     else:
         printer('Your answer is wrong!')
         __current_monster.attack()
         player.life -= __current_monster.level
         player.display_stats()
-        if player.life <= 0:
-            __current_monster = None
-            printer('You fainted because of your incompetence.')
-            printer('What a loser.')
-            printer('Unless you try again...')
         # log activity: lost to monster
         create_activity(text="{} dominates {}!".format(__current_monster.name,
                                                        player.name),
                         kind="monster-success")
+        if player.life <= 0:
+            __current_monster = None
+            # log activity: lost to monster
+            create_activity(text="{} fainted!".format(player.name),
+                            kind="player-fainted")
+            printer('You fainted because of your incompetence.')
+            printer('What a loser.')
+            printer('Unless you try again...')
     save_game_data()
 
 
