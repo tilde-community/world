@@ -33,7 +33,7 @@ def find_monster():
 
         # log activity: finished game
         create_activity(text="Our hero {} finished all the monsters!".format(
-                        game_data['player'].name), kind="monster-defeat")
+                        game_data['player'].name), kind="player-finished")
         return
 
     # log activity: found monster
