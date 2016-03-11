@@ -171,7 +171,7 @@ def ask_help():
     printer('Our hero, here are the functions you can call from this World.')
     printer('world.find_monster()   -> Find a monster to fight.')
     printer('world.attack(answer)   -> Attack the monster with your answer.')
-    printer('world.ask_help(answer) -> Print this help section.')
+    printer('world.ask_help()       -> Print this help section.')
     printer('world.enter()          -> Register yourself into the World.')
     printer('world.reset_world()    -> Reset everything about you.')
 
