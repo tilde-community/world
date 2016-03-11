@@ -24,16 +24,19 @@ def find_monster():
     global game_data
     if 'player' not in game_data:
         printer('You are not a registered player!')
-        printer('User world.enter() to enter the World.')
+        printer('Use world.enter() to enter the World.')
         return
     elif game_data['player'].level > len(__monsters):
         printer('There are no monsters left in the world!')
         printer('Congratulations {}! You have finished the game.'.format(
             game_data['player'].name))
-
         # log activity: finished game
         create_activity(text="Our hero {} finished all the monsters!".format(
                         game_data['player'].name), kind="player-finished")
+        return
+    elif __current_monster:
+        printer('You are already fighting a monster currently.')
+        printer('Use world.attack() to try defeating the monster.')
         return
 
     # log activity: found monster

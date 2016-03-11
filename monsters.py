@@ -41,7 +41,9 @@ class Monster(object):
 def create_the_monsters():
     monsters = []
 
+    # -------------------------------------------
     # ----------- BITTER WOMAN LVL. 1 -----------
+    # -------------------------------------------
     name = 'Bitter Woman'
     level = 1
     intro = ('A wild Bitter Woman appeared!\n'
@@ -56,16 +58,18 @@ def create_the_monsters():
     defeat = 'Bitter Woman died of loneliness.'
     attack = 'Bitter Woman used flirt!'
 
-    def eval0(answer):
+    def eval1(answer):
         assert answer(10) == '#walangforever' * 10
         assert answer(1) == '#walangforever'
         assert answer(100) == '#walangforever' * 100
         return True  # always remember to return True
 
-    monster1 = Monster(name, level, intro, body, defeat, attack, eval0)
+    monster1 = Monster(name, level, intro, body, defeat, attack, eval1)
     monsters.append(monster1)
 
+    # -------------------------------------------------
     # ------------ Hungry Mathematician LVL. 2 --------
+    # -------------------------------------------------
     name = 'Hungry Mathematician'
     level = 2
     intro = ('A Hungry Mathematician appeared!\n'
@@ -77,7 +81,7 @@ def create_the_monsters():
     defeat = 'Mathematician died of hunger.'
     attack = 'Mathematician used Number Theory!'
 
-    def eval1(answer):
+    def eval2(answer):
         def solution(n):
             i = 2
             s = 0
@@ -90,7 +94,49 @@ def create_the_monsters():
             assert answer(number) == solution(number)
         return True  # always remember to return True
 
-    monster2 = Monster(name, level, intro, body, defeat, attack, eval1)
+    monster2 = Monster(name, level, intro, body, defeat, attack, eval2)
     monsters.append(monster2)
+
+    # ---------------------------------------------------------
+    # -------------- Indecisive Shoplifter LVL. 2 -------------
+    # ---------------------------------------------------------
+    name = 'Indecisive Shoplifter'
+    level = 2
+    intro = ('An Indecisive Shoplifter appeared!\n'
+             'Indecisive Shoplifter: Should I steal this? or this? or that? '
+             'maybe all of them.')
+    body = ('A shoplifter would speak out her reaction aloud after seeing '
+            'the price of the dress she wanted to steal.\n'
+            'If the price is 100 pesos or less, she would say, "No one is '
+            'stealing this cheap sh*t!".\n'
+            'If the price is 500 pesos or less, but greater than 100 pesos, '
+            'she would say, "This one is a class A replica!".\n'
+            'If the price is 1000 pesos or less, but greater than 500 pesos, '
+            'she would say, "This is okay. Just going to fit it, not steal '
+            'it!".\n'
+            'If the price is greater than 1000 pesos, she would say, "I have '
+            'to steal this!"\n'
+            'Provide a function that accepts the dress price, then returns '
+            'the appropriate reaction of the shoplifter (in string).')
+    defeat = 'Indecisive Shoplifter died of losing the dress she never owned.'
+    attack = 'Indecisive Shoplifter attacked with a purse she never owned.'
+
+    def eval3(answer):
+        def solution(n):
+            if n <= 100:
+                return 'No one is stealing this cheap sh*t!'
+            elif n <= 500:
+                return 'This one is a class A replica!'
+            elif n <= 1000:
+                return 'This is okay. Just going to fit it, not steal it!'
+            else:
+                return 'I have to steal this!'
+
+        for n in [0, 100, 500, 1000, 1001]:
+            assert answer(n) == solution(n)
+        return True  # always remember to return True
+
+    monster3 = Monster(name, level, intro, body, defeat, attack, eval3)
+    monsters.append(monster3)
 
     return monsters
