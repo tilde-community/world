@@ -133,6 +133,13 @@ def save_game_data():
         pickle.dump(game_data, f)
 
 
+# load game data
+def load_game_data():
+    global game_data
+    with open(r'gamedat.pkl', 'rb') as f:
+        game_data = pickle.load(f)
+
+
 # run this function upon import just to keep things tidy
 def main():
     printer('Welcome to the World!\nGreetings young adventurer!')
