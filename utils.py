@@ -3,6 +3,10 @@ from __future__ import print_function
 import sys
 import time
 
+import requests
+
+import settings
+
 
 # The printer function that should be used all through out the game.
 def printer(text):
@@ -13,3 +17,10 @@ def printer(text):
         sys.stdout.flush()
         time.sleep(0.01)
     raw_input()
+
+
+# api endpoint for activities (GET, POST)
+def create_activity(text, kind):
+    r = requests.post(settings.activities_url,
+                      data={'text': text, 'kind': kind})
+    return r.ok
