@@ -93,15 +93,13 @@ def get_or_create_player():
     global game_data
     try:
         # load existing
-        with open(r'gamedat.pkl', 'rb') as f:
-            game_data = pickle.load(f)
+        load_game_data()
         game_data['player']
     except (IOError, KeyError):
         # create new
         player = enter()
         game_data['player'] = player  # save player instance
-        with open(r'gamedat.pkl', 'wb') as f:
-            pickle.dump(game_data, f)
+        save_game_data()
     return game_data['player']
 
 
