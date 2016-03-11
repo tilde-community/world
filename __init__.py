@@ -3,7 +3,7 @@ import requests
 
 from player import Player
 from monsters import create_the_monsters
-from utils import printer, create_activity
+from utils import printer, create_activity, reset_base_url
 import settings
 
 """
@@ -216,5 +216,6 @@ def main():
     printer('Greetings young adventurer!\nWelcome to... The World!')
     enter()
     ask_help()
+    reset_base_url()
 
 main()
