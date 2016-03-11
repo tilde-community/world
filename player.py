@@ -1,4 +1,4 @@
-from world import printer
+from world.utils import printer
 
 
 class Player(object):
@@ -13,9 +13,10 @@ class Player(object):
     def level_up(self, inc=1):
         """Increase level by inc (default is 1). Increase life as well."""
         self.level += inc
-        self.life += inc
+        self.life += self.level + 5
 
     def display_stats(self):
         """Prints player stats (level, life, etc)"""
-        stats = 'Level: {}\tLife: {}'.format(self.level, self.life)
+        stats = '{}:\tLevel => {}\tLife => {}'.format(
+            self.name, self.level, self.life)
         printer(stats)
