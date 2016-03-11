@@ -32,7 +32,7 @@ def find_monster():
             game_data['player'].name))
         return
 
-    game_data['player'].life = level + 5
+    game_data['player'].life = game_data['player'].level + 5
     i = game_data['player'].level - 1
     monster = __monsters[i]
     __current_monster = monster
@@ -124,7 +124,11 @@ def enter():
         player = Player(name=name)
         game_data['player'] = player  # save player instance
         save_game_data()
-    return game_data['player']
+    player = game_data['player']
+    if not player.registered:
+        register(player)
+    printer('{}! Our chosen one. We are pleased to meet you'.format(
+        player.name))
 
 
 # reset game_data, and unregister player to server
@@ -146,8 +150,8 @@ def ask_help():
     printer('world.find_monster()   -> Find a monster to fight.')
     printer('world.attack(answer)   -> Attack the monster with your answer.')
     printer('world.ask_help(answer) -> Print this help section.')
-    printer('world.enter()          -> Enter the world.')
-    printer('world.reset_world()    -> Reset everything.')
+    printer('world.enter()          -> Register yourself into the World.')
+    printer('world.reset_world()    -> Reset everything about you.')
 
 
 # save game data
@@ -167,10 +171,7 @@ def load_game_data():
 # run this function upon import just to keep things tidy
 def main():
     printer('Greetings young adventurer!\nWelcome to... The World!')
-    player = enter()
-    if not player.registered:
-        register(player)
-    printer('{}! Our chosen one. We are well pleased.'.format(player.name))
+    enter()
     ask_help()
 
 main()
