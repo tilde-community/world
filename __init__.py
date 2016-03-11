@@ -3,7 +3,7 @@ import requests
 
 from player import Player
 from monsters import create_the_monsters
-from utils import printer
+from utils import printer, create_activity
 import settings
 
 """
@@ -30,6 +30,10 @@ def find_monster():
         printer('There are no monsters left in the world!')
         printer('Congratulations {}! You have finished the game.'.format(
             game_data['player'].name))
+
+        # log activity: finished game
+        create_activity(text="Our hero {} finished all the monsters!".format(
+                        game_data['player'].name), kind="monster-defeat")
         return
 
     game_data['player'].life = game_data['player'].level + 5
@@ -53,22 +57,31 @@ def attack(answer):
         __current_monster.name))
 
     result = __current_monster.evaluate(answer)
+    player = game_data['player']
     if result:
         printer('Your answer is correct!')
-        game_data['player'].level_up()
+        player.level_up()
         save_game_data()
         __current_monster.defeat()
         __current_monster = None
+        # log activity: defeat monster
+        create_activity(text="{} defeated {}!".format(player.name,
+                                                      __current_monster.name),
+                        kind="monster-defeat")
     else:
         printer('Your answer is wrong!')
         __current_monster.attack()
-        game_data['player'].life -= __current_monster.level
-        game_data['player'].display_stats()
-        if game_data['player'].life <= 0:
+        player.life -= __current_monster.level
+        player.display_stats()
+        if player.life <= 0:
             __current_monster = None
             printer('You fainted because of your incompetence.')
             printer('What a loser.')
             printer('Unless you try again...')
+        # log activity: lost to monster
+        create_activity(text="{} dominates {}!".format(__current_monster.name,
+                                                       player.name),
+                        kind="monster-success")
     save_game_data()
 
 
@@ -127,6 +140,9 @@ def enter():
     player = game_data['player']
     if not player.registered:
         register(player)
+    # log activity: enter world
+    create_activity(text="{} has entered the world!".format(player.name),
+                    kind="world-enter")
     printer('{}! Our chosen one. We are pleased to meet you'.format(
         player.name))
 
@@ -137,9 +153,15 @@ def reset_world():
     message = 'Are you sure you want to leave this world? (y/n) '
     if (raw_input(message).lower() == 'y'):
         global game_data
+        # log activity: exit world
+        player = game_data['player']
+        create_activity(text="{} has left the world!".format(player.name),
+                        kind="world-exit")
+
         game_data = {}  # this is so creepy! :-o
         save_game_data()  # reset game data
         printer('okay :(')
+
     else:
         printer("That's the spirit!")
 
