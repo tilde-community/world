@@ -24,16 +24,19 @@ def find_monster():
     global game_data
     if 'player' not in game_data:
         printer('You are not a registered player!')
-        printer('User world.enter() to enter the World.')
+        printer('Use world.enter() to enter the World.')
         return
     elif game_data['player'].level > len(__monsters):
         printer('There are no monsters left in the world!')
         printer('Congratulations {}! You have finished the game.'.format(
             game_data['player'].name))
-
         # log activity: finished game
         create_activity(text="Our hero {} finished all the monsters!".format(
                         game_data['player'].name), kind="player-finished")
+        return
+    elif __current_monster:
+        printer('You are already fighting a monster currently.')
+        printer('Use world.attack() to try defeating the monster.')
         return
 
     # log activity: found monster
@@ -77,15 +80,13 @@ def attack(answer):
         create_activity(text="{} defeated {}!".format(player.name,
                                                       __current_monster.name),
                         kind="monster-defeat")
-
-        player.level_up()
-        # log activity: level up
-        create_activity(text="{} leveled up! Now level {}".format(player.name,
-                                                                  player.level),
-                        kind="player-level-up")
-        save_game_data()
         __current_monster.defeat()
         __current_monster = None
+        player.level_up()
+        # log activity: level up
+        create_activity(text="{} leveled up! Now level {}".format(
+            player.name, player.level), kind="player-level-up")
+        save_game_data()
     else:
         printer('Your answer is wrong!')
         __current_monster.attack()
@@ -166,6 +167,8 @@ def enter():
                     kind="world-enter")
     printer('{}! Our chosen one. We are pleased to meet you'.format(
         player.name))
+    global __current_monster
+    __current_monster = None
 
 
 # reset game_data, and unregister player to server
@@ -173,6 +176,7 @@ def enter():
 def reset_world():
     message = 'Are you sure you want to leave this world? (y/n) '
     if (raw_input(message).lower() == 'y'):
+        global __current_monster
         global game_data
         # log activity: exit world
         player = game_data['player']
@@ -182,6 +186,7 @@ def reset_world():
         game_data = {}  # this is so creepy! :-o
         save_game_data()  # reset game data
         printer('okay :(')
+        __current_monster = None
 
     else:
         printer("That's the spirit!")

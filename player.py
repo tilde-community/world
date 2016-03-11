@@ -13,7 +13,9 @@ class Player(object):
     def level_up(self, inc=1):
         """Increase level by inc (default is 1). Increase life as well."""
         self.level += inc
-        self.life += self.level + 5
+        self.life = self.level + 5
+        text = 'You leveled up! You are now lvl. {0} with max life of {1}'
+        printer(text.format(self.level, self.life))
 
     def display_stats(self):
         """Prints player stats (level, life, etc)"""
