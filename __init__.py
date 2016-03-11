@@ -1,10 +1,10 @@
-from __future__ import print_function
-
 import pickle
-import sys
-import time
-
 import requests
+
+from player import Player
+from monsters import create_the_monsters
+from utils import printer
+import settings
 
 """
 Persist game_data via pickle
@@ -13,22 +13,6 @@ player    the player instance, should you set/unset you must call
           save_game_data() afterwards
 """
 game_data = {}
-
-
-# The printer function that should be used all through out the game.
-def printer(text):
-    for c in text:
-        if c == '\n':
-            raw_input()
-        print(c, end='')
-        sys.stdout.flush()
-        time.sleep(0.01)
-    raw_input()
-
-
-from player import Player
-from monsters import create_the_monsters
-
 
 __monsters = create_the_monsters()
 __current_monster = None
@@ -85,6 +69,7 @@ def attack(answer):
             printer('You fainted because of your incompetence.')
             printer('What a loser.')
             printer('Unless you try again...')
+    save_game_data()
 
 
 # register player to server
@@ -94,7 +79,7 @@ def register(player):
     global game_data
     printer('Registering to server...')
     try:
-        r = requests.post('http://localhost:8888/register/',
+        r = requests.post(settings.register_url,
                           data={'username': player.name})
     except Exception, e:
         printer(e)
@@ -119,8 +104,7 @@ def register(player):
 
 # unregister player to server
 def unregister(player):
-    r = requests.post('http://localhost:8888/deactivate/',
-                      data={'username': player.name})
+    r = requests.post(settings.deactivate_url, data={'username': player.name})
     if r.status_code == 200:
         return True
     return False
@@ -131,8 +115,7 @@ def enter():
     global game_data
     try:
         # load existing
-        with open(r'gamedat.pkl', 'rb') as f:
-            game_data = pickle.load(f)
+        load_game_data()
         game_data['player']
     except (IOError, KeyError):
         # create new
@@ -172,6 +155,13 @@ def save_game_data():
     global game_data
     with open(r'gamedat.pkl', 'wb') as f:  # reset game_data
         pickle.dump(game_data, f)
+
+
+# load game data
+def load_game_data():
+    global game_data
+    with open(r'gamedat.pkl', 'rb') as f:
+        game_data = pickle.load(f)
 
 
 # run this function upon import just to keep things tidy

@@ -1,4 +1,4 @@
-from world import printer
+from world.utils import printer
 
 
 class Player(object):
