@@ -139,4 +139,41 @@ def create_the_monsters():
     monster3 = Monster(name, level, intro, body, defeat, attack, eval3)
     monsters.append(monster3)
 
+    # -------------------------------------------------------
+    # -------------- Scumbag Taxi Driver LVL. 2 -------------
+    # -------------------------------------------------------
+    name = 'Scumbag Taxi Driver'
+    level = 2
+    intro = ('A Scumbag Taxi Driver appeared!\n'
+             'Taxi Driver: Asa ka dong? (giggles)')
+    body = ('The total taxi ride cost is divided into 4 parts:\n'
+            '1) An initial of P40\n'
+            '2) P3.50 for at least every  0.5 km travelled.\n'
+            '3) P3.50 for at least every 30 seconds stationary.\n'
+            '4) If you are new to cebu, the driver asks for an additional of '
+            'P100\n'
+            'Provide a function that accepts 3 parameters: kms travelled, '
+            'number of seconds the taxi is stationary, and a boolean '
+            'signifying if the passenger is new to cebu (True) or not '
+            '(False).\n'
+            'For example:\n'
+            '   your_function(3.6, 60, True)\n'
+            'should return:\n'
+            '   171.5')
+    defeat = 'Taxi Driver died of being sued of illegal addition of fees.'
+    attack = 'Taxi Driver attacked with hit and run!'
+
+    def eval4(answer):
+        def solution(km, sec, new):
+            ans = 40 + (km // 0.5 * 3.5) + (sec // 30 * 3.5)
+            ans += (100 if new else 0)
+            return ans
+
+        for km, sec, new in [(3.6, 60, True), (5, 33, False)]:
+            assert answer(km, sec, new) == solution(km, sec, new)
+        return True
+
+    monster4 = Monster(name, level, intro, body, defeat, attack, eval4)
+    monsters.append(monster4)
+
     return monsters

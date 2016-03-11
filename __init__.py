@@ -80,14 +80,13 @@ def attack(answer):
         create_activity(text="{} defeated {}!".format(player.name,
                                                       __current_monster.name),
                         kind="monster-defeat")
-
+        __current_monster.defeat()
+        __current_monster = None
         player.level_up()
         # log activity: level up
         create_activity(text="{} leveled up! Now level {}".format(
             player.name, player.level), kind="player-level-up")
         save_game_data()
-        __current_monster.defeat()
-        __current_monster = None
     else:
         printer('Your answer is wrong!')
         __current_monster.attack()
