@@ -46,7 +46,7 @@ def create_the_monsters():
     level = 1
     intro = ('A wild Bitter Woman appeared!\n'
              'Bitter Woman: Walang forever!')
-    body = ('Provide a function that accepts a non-negative integer n, then '
+    body = ('Provide a function that accepts a positive integer n, then '
             'returns the string \'#walangforever\' (without quotes) n times '
             'without being separated by a new line.\n'
             'For example:\n'
@@ -59,7 +59,7 @@ def create_the_monsters():
     def eval0(answer):
         assert answer(10) == '#walangforever' * 10
         assert answer(1) == '#walangforever'
-        assert answer(0) == ''
+        assert answer(100) == '#walangforever' * 100
         return True
 
     monster1 = Monster(name, level, intro, body, defeat, attack, eval0)
