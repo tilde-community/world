@@ -80,9 +80,8 @@ def attack(answer):
 
         player.level_up()
         # log activity: level up
-        create_activity(text="{} leveled up! Now level {}".format(player.name,
-                                                                  player.level),
-                        kind="player-level-up")
+        create_activity(text="{} leveled up! Now level {}".format(
+            player.name, player.level), kind="player-level-up")
         save_game_data()
         __current_monster.defeat()
         __current_monster = None
@@ -166,6 +165,8 @@ def enter():
                     kind="world-enter")
     printer('{}! Our chosen one. We are pleased to meet you'.format(
         player.name))
+    global __current_monster
+    __current_monster = None
 
 
 # reset game_data, and unregister player to server
@@ -173,6 +174,7 @@ def enter():
 def reset_world():
     message = 'Are you sure you want to leave this world? (y/n) '
     if (raw_input(message).lower() == 'y'):
+        global __current_monster
         global game_data
         # log activity: exit world
         player = game_data['player']
@@ -182,6 +184,7 @@ def reset_world():
         game_data = {}  # this is so creepy! :-o
         save_game_data()  # reset game data
         printer('okay :(')
+        __current_monster = None
 
     else:
         printer("That's the spirit!")

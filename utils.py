@@ -21,6 +21,10 @@ def printer(text):
 
 # api endpoint for activities (GET, POST)
 def create_activity(text, kind):
-    r = requests.post(settings.activities_url,
-                      data={'text': text, 'kind': kind})
-    return r.ok
+    try:
+        r = requests.post(settings.activities_url,
+                          data={'text': text, 'kind': kind})
+    except:
+        return False
+    else:
+        return r.ok

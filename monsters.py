@@ -60,9 +60,37 @@ def create_the_monsters():
         assert answer(10) == '#walangforever' * 10
         assert answer(1) == '#walangforever'
         assert answer(100) == '#walangforever' * 100
-        return True
+        return True  # always remember to return True
 
     monster1 = Monster(name, level, intro, body, defeat, attack, eval0)
     monsters.append(monster1)
+
+    # ------------ Hungry Mathematician LVL. 2 --------
+    name = 'Hungry Mathematician'
+    level = 2
+    intro = ('A Hungry Mathematician appeared!\n'
+             'Mathematician: I will eat your mother\'s pi unless you solve '
+             'this problem!')
+    body = ('What is the sum of all even positive integers less than a given '
+            'positive integer n? Provide a function than accepts n and '
+            'returns the right answer.')
+    defeat = 'Mathematician died of hunger.'
+    attack = 'Mathematician used Number Theory!'
+
+    def eval1(answer):
+        def solution(n):
+            i = 2
+            s = 0
+            while i < n:
+                s += i
+                i += 2
+            return s
+
+        for number in [1, 100, 20]:
+            assert answer(number) == solution(number)
+        return True  # always remember to return True
+
+    monster2 = Monster(name, level, intro, body, defeat, attack, eval1)
+    monsters.append(monster2)
 
     return monsters
