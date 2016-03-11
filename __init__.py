@@ -112,7 +112,7 @@ def register(player):
     if player.registered:
         return True
     global game_data
-    printer('Registering to server...')
+    printer('Registering to server...', False)
     try:
         r = requests.post(settings.register_url,
                           data={'username': player.name})
@@ -165,7 +165,7 @@ def enter():
     # log activity: enter world
     create_activity(text="{} has entered the world!".format(player.name),
                     kind="world-enter")
-    printer('{}! Our chosen one. We are pleased to meet you'.format(
+    printer('{}! Our chosen one. We are pleased to meet you.'.format(
         player.name))
     global __current_monster
     __current_monster = None

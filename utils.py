@@ -9,14 +9,15 @@ import settings
 
 
 # The printer function that should be used all through out the game.
-def printer(text):
+def printer(text, end_pause=True):
     for c in text:
         if c == '\n':
             raw_input()
         print(c, end='')
         sys.stdout.flush()
         time.sleep(0.01)
-    raw_input()
+    if end_pause:
+        raw_input()
 
 
 # api endpoint for activities (GET, POST)

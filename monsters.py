@@ -171,9 +171,96 @@ def create_the_monsters():
 
         for km, sec, new in [(3.6, 60, True), (5, 33, False)]:
             assert answer(km, sec, new) == solution(km, sec, new)
-        return True
+        return True  # always remember to return True
 
     monster4 = Monster(name, level, intro, body, defeat, attack, eval4)
     monsters.append(monster4)
+
+    # ---------------------------------------------------------
+    # --------- Cheating Presidential Candidate LVL. 3 --------
+    # ---------------------------------------------------------
+    name = 'Cheating Presidential Candidate'
+    level = 3
+    intro = ('A Cheating Presidential Candidate appeared!\n'
+             'Cheating Presidential Candidate: Vote for me! Vote for me! '
+             '(throws 1000 peso bills to people)')
+    body = ('This cheating candidate stole (10%) from each of his opponents\' '
+            'total votes by hacking the voting system. What\'s bad about it '
+            'is that he used Python to do so. This person deserves no '
+            'respect, not because he gave free money to everyone, but '
+            'because he used Python as a tool for his evil deeds.\n'
+            'Given a list of integers siginifying the votes of the '
+            'cheater\'s opponents, return an array of integers signifying the '
+            'actual number of votes before they were altered.\n'
+            'For example:\n'
+            '   your_function([99, 9, 270, 111105])\n'
+            'should return:\n'
+            '   [110, 10, 300, 123450]')
+    defeat = ('Cheating Presidential Candidate died of assassination ordered '
+              'by another presidential candidate.')
+    attack = ('Cheating Presidential Candidate used lies, and money, and '
+              'more lies.')
+
+    def eval5(answer):
+        def solution(votes):
+            return [int(x/0.9) for x in votes]
+
+        cases = [[99, 10, 270, 111105], [0]]
+        for case in cases:
+            assert answer(case) == solution(case)
+
+        return True  # always remember to return True
+
+    monster5 = Monster(name, level, intro, body, defeat, attack, eval5)
+    monsters.append(monster5)
+
+    # ---------------------------------------------------------
+    # -------------- Super Addicted Gamer LVL. 3 --------------
+    # ---------------------------------------------------------
+    name = 'Super Addicted Gamer'
+    level = 3
+    intro = ('A Super Addicted Gamer appeared!\n'
+             'Addicted Gamer: Stun oi! Bugo! Yawa!')
+    body = ('In a game called Dota2, every hero has at least 4 skills. '
+            'Some of them are burst damage while some are passive skills.\n'
+            'Provide a function that returns the total burst damage when '
+            'given a dictionary composed of keys as their skills\' names '
+            '(string) and values as the amount of damage the skill inflicts. '
+            'For passive skills, the value would not be the amount of damage, '
+            'but instead the string \'passive\'.\n'
+            'For example:\n'
+            '   your_function({\'stun\': 100, \'2nd skill\': \'passive\', '
+            '\'skill that inflicts damage\': 150, \'ultimate skill\': '
+            '10000})\n'
+            'should return:\n'
+            '   10250')
+    defeat = ('Addicted Gamer died of not enjoying life to the fullest.')
+    attack = ('Addicted Gamer used a speech about you being a stupid person '
+              'when you\'re not good at gaming.')
+
+    def eval6(answer):
+        def solution(skills):
+            s = 0
+            for v in skills.values():
+                if type(v) == int:
+                    s += v
+            return s
+
+        cases = [
+            {'stun': 100, '2nd skill': 'passive',
+             'skill that inflicts damage': 150, 'ultimate skill': 10000},
+            {'skill': 'passive'},
+            {'a': 1, 'b': 1, 'c': 1, 'd': 1, 'e': 1}]
+
+        for case in cases:
+            assert answer(case) == solution(case)
+        return True  # always remember to return True
+
+    monster6 = Monster(name, level, intro, body, defeat, attack, eval6)
+    monsters.append(monster6)
+
+    # ---------------------------------------------------------
+    # -------------- Cat-calling Carpenter LVL. 3 -------------
+    # ---------------------------------------------------------
 
     return monsters
