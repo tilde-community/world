@@ -1,7 +1,6 @@
 from __future__ import print_function
 
 import pickle
-import random
 import sys
 import time
 
@@ -23,7 +22,7 @@ def printer(text):
             raw_input()
         print(c, end='')
         sys.stdout.flush()
-        time.sleep(0.02)
+        time.sleep(0.01)
     raw_input()
 
 
@@ -35,26 +34,26 @@ __monsters = create_the_monsters()
 __current_monster = None
 
 
-# a function that is used when entering the world.
-def enter():
-    printer('Alas, for the intro. What is your name again?')
-    name = str(raw_input())
-    player = Player(name=name)
-    return player
-
-
 # find a monster to fight with.
 def find_monster():
-    i = random.randint(0, len(__monsters)-1)
     global __current_monster
     global game_data
-    defeated_monsters = game_data['player'].defeated_monsters
+    if 'player' not in game_data:
+        printer('You are not a registered player!')
+        printer('User world.enter() to enter the World.')
+        return
+    elif game_data['player'].level > len(__monsters):
+        printer('There are no monsters left in the world!')
+        printer('Congratulations {}! You have finished the game.'.format(
+            game_data['player'].name))
+        return
+
+    game_data['player'].life = level + 5
+    i = game_data['player'].level - 1
     monster = __monsters[i]
-    if monster not in defeated_monsters:
-        __current_monster = monster
-        __current_monster.introduction()
-    else:
-        printer('No monster found. Try again.')
+    __current_monster = monster
+    __current_monster.introduction()
+    game_data['player'].display_stats()
 
 
 # evaluate the answer given the current monster being fought
@@ -72,7 +71,6 @@ def attack(answer):
     result = __current_monster.evaluate(answer)
     if result:
         printer('Your answer is correct!')
-        game_data['player'].defeated_monsters.append(__current_monster)
         game_data['player'].level_up()
         save_game_data()
         __current_monster.defeat()
@@ -80,6 +78,13 @@ def attack(answer):
     else:
         printer('Your answer is wrong!')
         __current_monster.attack()
+        game_data['player'].life -= __current_monster.level
+        game_data['player'].display_stats()
+        if game_data['player'].life <= 0:
+            __current_monster = None
+            printer('You fainted because of your incompetence.')
+            printer('What a loser.')
+            printer('Unless you try again...')
 
 
 # register player to server
@@ -122,7 +127,7 @@ def unregister(player):
 
 
 # get existing player or create a new player
-def get_or_create_player():
+def enter():
     global game_data
     try:
         # load existing
@@ -131,32 +136,35 @@ def get_or_create_player():
         game_data['player']
     except (IOError, KeyError):
         # create new
-        player = enter()
+        printer('Alas, for the intro. What is your name again?')
+        name = str(raw_input())
+        player = Player(name=name)
         game_data['player'] = player  # save player instance
-        with open(r'gamedat.pkl', 'wb') as f:
-            pickle.dump(game_data, f)
+        save_game_data()
     return game_data['player']
 
 
 # reset game_data, and unregister player to server
 # much like an apocalypse but the host survives, (this time the world)
 def reset_world():
-    if (raw_input('Are you sure you want to leave this world? (y/n) ').lower()
-            == 'y'):
+    message = 'Are you sure you want to leave this world? (y/n) '
+    if (raw_input(message).lower() == 'y'):
         global game_data
-        try:
-            unregistered = unregister(game_data['player'])
-        except requests.ConnectionError:
-            printer("Nope! The almighty won't permit you. :P")
-        else:
-            if unregistered:
-                game_data = {}  # this is so creepy! :-o
-                save_game_data()  # reset game data
-                printer('okay :(')
-            else:
-                printer("Nope! The almighty server won't permit you. :P")
+        game_data = {}  # this is so creepy! :-o
+        save_game_data()  # reset game data
+        printer('okay :(')
     else:
         printer("That's the spirit!")
+
+
+# print help
+def ask_help():
+    printer('Our hero, here are the functions you can call from this World.')
+    printer('world.find_monster()   -> Find a monster to fight.')
+    printer('world.attack(answer)   -> Attack the monster with your answer.')
+    printer('world.ask_help(answer) -> Print this help section.')
+    printer('world.enter()          -> Enter the world.')
+    printer('world.reset_world()    -> Reset everything.')
 
 
 # save game data
@@ -169,9 +177,10 @@ def save_game_data():
 # run this function upon import just to keep things tidy
 def main():
     printer('Greetings young adventurer!\nWelcome to... The World!')
-    player = get_or_create_player()
+    player = enter()
     if not player.registered:
         register(player)
     printer('{}! Our chosen one. We are well pleased.'.format(player.name))
+    ask_help()
 
 main()

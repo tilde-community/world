@@ -6,7 +6,6 @@ class Player(object):
     level = 1
     life = 6
     registered = False  # flag for player registered to server
-    defeated_monsters = []
 
     def __init__(self, name, *args, **kwargs):
         self.name = name
@@ -18,5 +17,6 @@ class Player(object):
 
     def display_stats(self):
         """Prints player stats (level, life, etc)"""
-        stats = 'Level: {}\tLife: {}'.format(self.level, self.life)
+        stats = '{}:\tLevel => {}\tLife => {}'.format(
+            self.name, self.level, self.life)
         printer(stats)

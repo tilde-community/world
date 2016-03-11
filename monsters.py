@@ -23,6 +23,7 @@ class Monster(object):
 
     def defeat(self):
         printer(self.defeated_message)
+        printer('You defeated {}!'.format(self.name))
 
     def evaluate(self, ans):
         try:
@@ -46,7 +47,7 @@ def create_the_monsters():
     intro = ('A wild Bitter Woman appeared!\n'
              'Bitter Woman: Walang forever!')
     body = ('Provide a function that accepts a non-negative integer n, then '
-            'prints the string \'#walangforever\' (without quotes) n times '
+            'returns the string \'#walangforever\' (without quotes) n times '
             'without being separated by a new line.\n'
             'For example:\n'
             '  your_function(3)\n'
