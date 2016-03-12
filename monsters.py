@@ -262,5 +262,106 @@ def create_the_monsters():
     # ---------------------------------------------------------
     # -------------- Cat-calling Carpenter LVL. 3 -------------
     # ---------------------------------------------------------
+    name = 'Cat-calling Carpenter'
+    level = 3
+    intro = ('A Cat-calling Carpenter appeared!\n'
+             'Cat-calling Carpenter: Hi miga! Can i have your number miga? '
+             'Salig chicks kaayu, nagminaldita na ang akong miga. (grins)')
+    body = ('You have to show this guy that you deserve some respect. You\'re '
+            'not a chick, you\'re a Pythonista chick! You should show him a '
+            'good design for a fence. A fence is composed of pickets '
+            '(vertical bars) and rails (horizontal bars). For your design, '
+            'there are only two rails: for the top most part and the lowest '
+            'part of the fence. In between two pickets is a space. And the '
+            'function you need to provide returns a string composed of:\n'
+            '\'-\' to signify part of a rail,\n'
+            '\'|\' to signify one unit of a picket,\n'
+            '\' \' to signify the space between two pickets, and\n'
+            '\'+\' to signify the intersection between a rail and a picket\n'
+            'You will be given 2 parameters: the height of the fence and the '
+            'number of pickets. Assume that the given height is at least 3 '
+            'units and the number of pickets is at least 3.'
+            'For example:\n'
+            '   your_function(5, 7)\n'
+            'should return:\n'
+            '+-+-+-+-+-+-+\n'
+            '| | | | | | |\n'
+            '| | | | | | |\n'
+            '| | | | | | |\n'
+            '+-+-+-+-+-+-+')
+    defeat = ('Cat-calling Carpenter died of being stoned to death by '
+              'hardcore feminists.')
+    attack = ('Cat-calling Carpenter slapped your butt, then looks at you '
+              'while biting his lips.')
+
+    def eval7(answer):
+        def solution(height, pickets):
+            end = '+' + ('-+' * (pickets-1))
+            mid = '|' + (' |' * (pickets-1)) + '\n'
+            return end + '\n' + (mid * (height-2)) + end
+
+        for h, p in [(5, 7), (3, 3), (10, 10)]:
+            assert answer(h, p) == solution(h, p)
+
+        return True  # always remember to return True
+
+    monster7 = Monster(name, level, intro, body, defeat, attack, eval7)
+    monsters.append(monster7)
+
+    # ---------------------------------------------------------
+    # ----------------- Violent Drunk LVL. 4 ------------------
+    # ---------------------------------------------------------
+    name = 'Violent Drunk'
+    level = 4
+    intro = ('A Violent Drunk appeared!\n'
+             'Violent Drunk: @ha% %h# f&ck a$# y(& l((k*ng a%')
+    body = ('Seriously, we need to understand this guy first. Fighting this '
+            'monster is like watching anime without subtitles. Here are the '
+            'equivalent letters to a symbol:\n'
+            '! = q\n'
+            '@ = w\n'
+            '# = e\n'
+            '$ = r\n'
+            '% = t\n'
+            '^ = y\n'
+            '& = u\n'
+            '* = i\n'
+            '( = o\n'
+            ') = p\n'
+            'Provide a function that returns the deciphered message given a '
+            'string, which is what the drunkard said.\n'
+            'For example:\n'
+            '   your_function(\'h* c&%*#\')\n'
+            'should return:\n'
+            '   hi cutie')
+    defeat = 'Violent Drunk died of choking in his own vomit.'
+    attack = 'Violent Drunk used vomit on your face.'
+
+    def eval8(answer):
+        def solution(message):
+            d = {'!': 'q',
+                 '@': 'w',
+                 '#': 'e',
+                 '$': 'r',
+                 '%': 't',
+                 '^': 'y',
+                 '&': 'u',
+                 '*': 'i',
+                 '(': 'o',
+                 ')': 'p'}
+            deciphered = ''
+            for c in message:
+                if c in d.keys():
+                    deciphered += d[c]
+                else:
+                    deciphered += c
+            return deciphered
+
+        for m in ['@ha% %h# f&ck a$# y(& l((k*ng a%', 'h* c&%*#']:
+            assert answer(m) == solution(m)
+        return True  # always remember to return True
+
+    monster8 = Monster(name, level, intro, body, defeat, attack, eval8)
+    monsters.append(monster8)
 
     return monsters
