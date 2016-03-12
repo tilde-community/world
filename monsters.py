@@ -364,4 +364,88 @@ def create_the_monsters():
     monster8 = Monster(name, level, intro, body, defeat, attack, eval8)
     monsters.append(monster8)
 
+    # ---------------------------------------------------------
+    # ---------- Suspicious Drug Dealer LVL. 4 ----------------
+    # ---------------------------------------------------------
+    name = 'Suspicious Drug Dealer'
+    level = 4
+    intro = ('A Suspicious Drug Dealer appeared!\n'
+             'Suspicious Drug Dealer: I tell you, this is a very, very '
+             'strong one! (shows packs of mik-mik)')
+    body = ('This Drug Dealer has three kinds of drugs. He gave you prices '
+            'for each kind but they are not the actual prices. The '
+            'first price is twice more expensive than its real price. The '
+            'second is 20 pesos more expensive than its real price. And the '
+            'last is cheaper than the real price by 1 peso.\n'
+            'Provide a function that accepts a tuple of three integers (the '
+            'fake prices) and returns a tuple of integers of the real prices '
+            'in order from cheapest to most expensive.\n'
+            'For example:\n'
+            '   your_function((30, 30, 30))\n'
+            'should return:\n'
+            '   (10, 15, 31)')
+    defeat = 'Suspicious Drug Dealer died by the hands of Duterte.'
+    attack = ('Suspicious Drug Dealer injected you with something you don\'t '
+              'want to know.')
+
+    def eval9(answer):
+        def solution(prices):
+            x, y, z = prices
+            a = [x / 2, y - 20, z + 1]
+            a.sort()
+            return tuple(a)
+
+        for t in [(30, 30, 30), (10, 24, 2), (10, 50, 10)]:
+            assert answer(t) == solution(t)
+        return True  # always remember to return True
+
+    monster9 = Monster(name, level, intro, body, defeat, attack, eval9)
+    monsters.append(monster9)
+
+    # ---------------------------------------------------------
+    # ------------- Emmanuel Lodovice LVL. 5 ------------------
+    # ---------------------------------------------------------
+    name = 'Emmanuel Lodovice'
+    level = 5
+    intro = ('Warning! Warning! Warning!\n'
+             'Bost Fight!\n'
+             'Are you sure you want to fight this last monster (y/n)?\n'
+             'You are gonna fight him anyway.\n'
+             'Emmanuel Lodovice appeared!\n'
+             'Emmanuel Lodovice: ...')
+    body = ('Emmanuel Lodovice is one of the greatest legends of UP CEBU. '
+            'A monster is nothing compared to him. He is more like a GOD. '
+            'You shouldn\'t disappoint him with your answers.\n'
+            'You need to provide a function that returns a dictionary '
+            'composed of three keys:\n'
+            'name => a function that accepts a firstname and a lastname, '
+            'then returns a string in the format of \'lastname, firstname\'\n'
+            'organize => a function that accepts a list then returns a '
+            'dictionary with elements indexes\' as keys and the elements as '
+            'values.\n'
+            'encode => a function that accepts a string of at least '
+            'length=1, then returns a tuple composed of:\n'
+            '   length of the string,\n'
+            '   last character of the string,\n'
+            '   the string without the last character\n'
+            '   and a list of all its characters excluding whitespaces.')
+    defeat = ('Emmanuel Lodovice: ...\n'
+              'Emmanuel Lodovice walked away, hiding the smile from his '
+              'face.')
+    attack = ('Emmanuel Lodovice turned his back.')
+
+    def eval10(answer):
+        ans = answer()
+        assert ans['name']('Eman', 'Lodovice') == 'Lodovice, Eman'
+        assert (
+            ans['organize'](['Eman', 3.2, True]) ==
+            {0: 'Eman', 1: 3.2, 2: True})
+        s = 'baboy ka'
+        t = (8, 'a', 'baboy k', ['b', 'a', 'b', 'o', 'y', 'k', 'a'])
+        assert ans['encode'](s) == t
+        return True
+
+    monster10 = Monster(name, level, intro, body, defeat, attack, eval10)
+    monsters.append(monster10)
+
     return monsters
